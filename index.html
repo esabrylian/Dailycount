@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Stock Count</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="login-view">
+  <form id="login-form" class="card login-card">
+    <h1>DAILY STOCK COUNT</h1>
+    <p class="muted">Masuk dengan akun yang diberikan admin.</p>
+    <label>Email <input id="login-email" type="email" autocomplete="username" required></label>
+    <label>Password <input id="login-password" type="password" autocomplete="current-password" required></label>
+    <button class="btn primary" type="submit">MASUK</button>
+    <p id="login-error" class="error" hidden></p>
+  </form>
+</section>
+
+<!-- APLIKASI -->
+<div id="app" hidden>
+  <header class="topbar">
+    <strong>DAILY STOCK COUNT</strong>
+    <span id="user-email" class="muted small"></span>
+    <button id="logout-btn" class="btn small">Keluar</button>
+  </header>
+  <nav id="nav"></nav>
+
+  <main>
+    <!-- DAILY STOCK COUNT -->
+    <section id="view-count" class="view" hidden>
+      <div class="card">
+        <div class="video-box">
+          <video id="cam" playsinline muted></video>
+          <div id="cam-hint" class="cam-hint">Kamera belum aktif</div>
+        </div>
+        <button id="scan-btn" class="btn primary big">SCAN BARCODE</button>
+        <p id="scan-msg" class="muted small"></p>
+      </div>
+
+      <div id="notfound" class="card error-card" hidden>
+        <b>BARCODE TIDAK TERDAFTAR DALAM MASTER PRODUCT.</b>
+        <span id="nf-code" class="small"></span>
+      </div>
+
+      <div id="product-card" class="card" hidden>
+        <dl class="pinfo">
+          <dt>Barcode</dt><dd id="pi-barcode"></dd>
+          <dt>Internal Code</dt><dd id="pi-code"></dd>
+          <dt>Product Name</dt><dd id="pi-name"></dd>
+          <dt>Size</dt><dd id="pi-size"></dd>
+        </dl>
+        <label>JUMLAH BARANG
+          <input id="qty" class="qty" type="number" inputmode="numeric" min="1" step="1" placeholder="0">
+        </label>
+        <div class="total-box">Total hari ini sebelum simpan: <b id="cur-total">0</b></div>
+        <button id="save-btn" class="btn primary big">SIMPAN</button>
+        <div class="row">
+          <button id="cancel-btn" class="btn">BATAL</button>
+          <button id="next-btn" class="btn">SCAN BERIKUTNYA</button>
+        </div>
+      </div>
+
+      <div id="last-result" class="card ok-card" hidden></div>
+    </section>
+
+    <!-- MASTER PRODUCT -->
+    <section id="view-products" class="view" hidden>
+      <div class="card">
+        <h2>Import Master Produk (CSV)</h2>
+        <p class="muted small">Format: <code>Barcode,Internal Code,Product Name,Size</code> (pemisah koma atau titik koma). Barcode disimpan apa adanya.</p>
+        <input id="csv-file" type="file" accept=".csv,text/csv">
+        <div id="csv-summary" class="small" hidden></div>
+        <button id="csv-import-btn" class="btn primary" hidden>IMPOR SEKARANG</button>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <input id="p-search" type="search" placeholder="Cari barcode / kode / nama...">
+          <button id="p-dup-btn" class="btn small">Periksa Duplikat</button>
+        </div>
+        <div id="p-dup-result" class="small" hidden></div>
+        <p id="p-count" class="muted small"></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Barcode</th><th>Kode</th><th>Nama</th><th>Size</th><th>Aktif</th><th></th></tr></thead>
+            <tbody id="p-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <dialog id="edit-dlg">
+        <form id="edit-form" method="dialog" class="dlg-form">
+          <h3>Edit Produk</h3>
+          <label>Barcode <input id="e-barcode" required></label>
+          <label>Internal Code <input id="e-code" required></label>
+          <label>Product Name <input id="e-name" required></label>
+          <label>Size <input id="e-size"></label>
+          <label class="check"><input id="e-active" type="checkbox"> Aktif</label>
+          <div class="row">
+            <button type="button" id="e-cancel" class="btn">Batal</button>
+            <button type="submit" class="btn primary">Simpan</button>
+          </div>
+        </form>
+      </dialog>
+    </section>
+  </main>
+</div>
+
+<div id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/count.js"></script>
+<script src="js/products.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>
